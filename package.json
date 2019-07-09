@@ -1,0 +1,42 @@
+{
+  "name": "cx",
+  "version": "0.0.10",
+  "description": "Script to help work with the things.",
+  "bin": {
+    "cx-dev": "./bin.js",
+    "cx": "./target/bin.js"
+  },
+  "scripts": {
+    "fmt": "cljfmt src/**/*.cljs",
+    "repl": "lumo -c src -r",
+    "start": "lumo -c src -m nrepl.server",
+    "prebuild": "rimraf target",
+    "build": "lumo -c src build.cljs",
+    "postbuild": "browserify --node target/main.js > target/bundle.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/djblue/cx"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "nrepl-cljs": "djblue/nrepl-cljs#d14ebd1489e8abb743881ffe3c2f386c4bb17ff5"
+  },
+  "dependencies": {
+    "@cljs-oss/module-deps": "^1.1.1",
+    "browserify": "^16.2.3",
+    "cross-spawn": "^6.0.5",
+    "encoding": "^0.1.12",
+    "extract-zip": "^1.6.7",
+    "find-up": "^3.0.0",
+    "fuzzy": "^0.1.3",
+    "inquirer": "^6.2.0",
+    "inquirer-autocomplete-prompt": "^1.0.1",
+    "lumo-cljs": "^1.10.1",
+    "mkdirp": "^0.5.1",
+    "node-cljfmt": "^0.5.3-1",
+    "node-fetch": "^2.3.0",
+    "rimraf": "^2.6.3",
+    "xml2js": "^0.4.19"
+  }
+}
