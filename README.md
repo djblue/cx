@@ -1,5 +1,7 @@
 # cx
 
+[![Build Status](https://travis-ci.org/djblue/cx.svg?branch=master)](https://travis-ci.org/djblue/cx)
+
 A handy little script to help work on things.
 
 ## install
