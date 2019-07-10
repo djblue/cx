@@ -72,7 +72,7 @@
   (assoc opts :phases [:clean :install]))
 
 (defn isolated-m2 [opts]
-  (update opts :define conj [:maven.repo.local (p/join (:cwd opts) "m2")]))
+  (update opts :define conj [:maven.repo.local (p/join (:project-root opts) "m2")]))
 
 (defn threaded-build [opts]
   (assoc opts :threads-per-core 1))

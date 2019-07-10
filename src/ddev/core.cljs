@@ -9,6 +9,7 @@
             [ddev.tui :as tui]
             [ddev.shell :refer [sh]]
             [ddev.xml :as xml]
+            find-up
             node-fetch
             [extract-zip :as extract]
             ddev.async))
@@ -113,16 +114,19 @@
                     [(fn [] (.close srv))
                      (xml/format (mvn/patch-settings-xml settings-xml url))])))))))
 
+
+
 (defn run-maven-build
   ([opts] (run-maven-build opts (fs/cwd)))
   ([opts cwd]
-   (let [mirror-m2? (some #(= % :local-m2-mirror) opts)
-         settings-xml (p/join cwd "settings.xml")
-         options (-> (mvn/merge-options opts {:cwd cwd})
-                     (merge (when mirror-m2? {:settings settings-xml}))
-                     mvn/opts->cmd)
-         sh-opts {:cwd cwd
-                  :env {:MAVEN_OPTS (str "-Xmx" "4G" " -Xms" "4g")}}]
+   (a/let [mirror-m2? (some #(= % :local-m2-mirror) opts)
+           project-root (.then (find-up ".git" #js {:cwd cwd}) p/dirname)
+           settings-xml (p/join project-root "settings.xml")
+           options (-> (mvn/merge-options opts {:project-root project-root})
+                       (merge (when mirror-m2? {:settings settings-xml}))
+                       mvn/opts->cmd)
+           sh-opts {:cwd cwd
+                    :env {:MAVEN_OPTS (str "-Xmx" "4G" " -Xms" "4g")}}]
      (if mirror-m2?
        (a/let [[on-close! settings] (start-maven-server)]
          (fs/spit settings-xml settings)
