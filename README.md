@@ -2,7 +2,8 @@
 
 [![Build Status](https://travis-ci.org/djblue/cx.svg?branch=master)](https://travis-ci.org/djblue/cx)
 
-A handy little script to help work on things.
+A handy little script to help work on [Codice](https://github.com/codice)
+and [Connexta](https://github.com/connexta) projects.
 
 ## install
 
