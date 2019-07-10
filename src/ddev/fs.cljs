@@ -2,7 +2,6 @@
   (:require-macros [ddev.async :as a])
   (:require [path :as p]
             [fs :as fs]
-            ddev.async
             rimraf
             mkdirp))
 
