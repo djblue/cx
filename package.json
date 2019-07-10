@@ -4,15 +4,13 @@
   "description": "Script to help work with the things.",
   "bin": {
     "cx-dev": "./bin.js",
-    "cx": "./target/bin.js"
+    "cx": "./target/deploy/bin.js"
   },
   "scripts": {
     "fmt": "cljfmt src/**/*.cljs",
     "repl": "lumo -c src -r",
     "start": "lumo -c src -m nrepl.server",
-    "prebuild": "rimraf target",
-    "build": "lumo -c src build.cljs",
-    "postbuild": "browserify --node target/main.js > target/bundle.js"
+    "build": "lumo -c src -m ddev.build"
   },
   "repository": {
     "type": "git",
