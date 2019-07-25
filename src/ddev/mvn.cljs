@@ -75,7 +75,7 @@
   (update opts :define conj [:maven.repo.local (p/join (:project-root opts) "m2")]))
 
 (defn threaded-build [opts]
-  (assoc opts :threads-per-core 1))
+  (assoc opts :threads-per-core 0.5))
 
 (def mvn-options
   {:skip-tests skip-tests
