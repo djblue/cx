@@ -1,2 +1,5 @@
 node_modules/
 target/
+.cljs_node_repl/
+.cpcache/
+.nrepl-port

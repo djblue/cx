@@ -1,0 +1,6 @@
+#!/bin/bash
+
+trap 'kill $(jobs -p)' EXIT
+clojure -Anrepl > /dev/null 2>&1 &
+vim src/ddev
+

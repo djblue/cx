@@ -1,0 +1,17 @@
+{:paths ["src"]
+ :deps
+ {org.clojure/clojurescript {:mvn/version "1.10.520"}
+  org.clojure/data.json {:mvn/version "0.2.6"}}
+ :aliases
+ {:build
+  {:main-opts ["-m" "ddev.build"]}
+  :watch
+  {:main-opts ["-m" "ddev.build" "watch"]}
+  :nrepl
+  {:main-opts ["-m" "nrepl.cmdline" "--middleware" "[cider.piggieback/wrap-cljs-repl]"]
+   :extra-deps
+   {nrepl/nrepl {:mvn/version "0.6.0"}
+    cider/piggieback {:mvn/version "0.4.1"}
+    node-async {:git/url "https://github.com/djblue/cljs-repl-node-async.git"
+                :sha "5dc0c18f7f8df72ee6c5eadbbcc3bbf695e0691a"}}}}}
+

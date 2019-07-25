@@ -13,6 +13,30 @@ If you get an `EACCES` error, try:
 
     sudo -E npm install -g github:djblue/cx.git#deploy
 
+## Build
+
+To build, first install npm dependencies by doing:
+
+    npm install
+
+Then, to build the `cx-dev` script, do:
+
+    clojure -Abuild
+
+If you want to test this script globally, do:
+
+    npm ln
+
+If you get an `EACCES` error, try:
+
+    sudo -E npm ln
+
+## Watching
+
+To build on source changes, do:
+
+    clojure -Awatch
+
 ## license
 
 The MIT License (MIT)
