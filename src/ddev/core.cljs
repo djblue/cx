@@ -11,8 +11,7 @@
             [ddev.xml :as xml]
             find-up
             node-fetch
-            [extract-zip :as extract]
-            ddev.async))
+            [extract-zip :as extract]))
 
 (defn fetch
   ([url] (fetch url {}))

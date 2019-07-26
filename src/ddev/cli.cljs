@@ -4,8 +4,7 @@
             [ddev.mvn :as mvn]
             [ddev.core :as ddev]
             [ddev.api :as api]
-            [ddev.tui :as tui]
-            [cljs.reader :refer [read-string]]))
+            [ddev.tui :as tui]))
 
 (defn redo-last-command
   "Perform the last command with no menu interactions"
@@ -61,13 +60,9 @@
                 :value (deref (second %))}))))
 
 (defn -main []
-  (let [[_ _ & args] (last (partition-by #(= % "--") process.argv))]
-    (if-not (zero? (count args))
-      (eval (read-string (first args)))
-      (a/let [f (tui/prompt
-                 {:type "autocomplete"
-                  :message "Select task to run"
-                  :choices (get-fns)})]
-        (apply f [])))
-    nil))
+  (a/let [f (tui/prompt
+             {:type "autocomplete"
+              :message "Select task to run"
+              :choices (get-fns)})]
+    (f)))
 
