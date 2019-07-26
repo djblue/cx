@@ -1,6 +1,6 @@
 (ns ddev.shell
-  (:require-macros [ddev.async :as a])
-  (:require [cross-spawn :as spawn]
+  (:require [ddev.async :as a]
+            [cross-spawn :as spawn]
             [ddev.fs :as fs]))
 
 (defn -js->clj+

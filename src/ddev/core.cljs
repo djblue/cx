@@ -1,6 +1,6 @@
 (ns ddev.core
-  (:require-macros [ddev.async :as a])
-  (:require [clojure.string :as s]
+  (:require [ddev.async :as a]
+            [clojure.string :as s]
             [child_process :as cp]
             [path :as p]
             [os :as os]

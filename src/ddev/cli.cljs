@@ -1,7 +1,7 @@
 (ns ddev.cli
   "Public API for CLI"
-  (:require-macros [ddev.async :as a])
-  (:require [ddev.mvn :as mvn]
+  (:require [ddev.async :as a]
+            [ddev.mvn :as mvn]
             [ddev.core :as ddev]
             [ddev.api :as api]
             [ddev.tui :as tui]

@@ -1,6 +1,6 @@
 (ns ddev.xml
-  (:require-macros [ddev.async :as a])
-  (:require [clojure.string :as s]
+  (:require [ddev.async :as a]
+            [clojure.string :as s]
             [xml2js :as xml]))
 
 (defn format [xml-obj]

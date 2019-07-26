@@ -1,8 +1,8 @@
 (ns ddev.api
   "Programatic API for DDEV.
   Code here should not require any user interaction."
-  (:require-macros [ddev.async :as a])
-  (:require [ddev.core :as ddev]
+  (:require [ddev.async :as a]
+            [ddev.core :as ddev]
             [cljs.reader :refer [read-string]]
             [os :as os]
             [path :as p]

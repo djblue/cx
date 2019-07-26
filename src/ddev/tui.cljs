@@ -1,7 +1,7 @@
 (ns ddev.tui
   "Common text user interface functions"
-  (:require-macros [ddev.async :as a])
-  (:require [fuzzy :as f]
+  (:require [ddev.async :as a]
+            [fuzzy :as f]
             [inquirer :as i]
             [inquirer-autocomplete-prompt :as auto]))
 

@@ -1,7 +1,7 @@
 (ns ddev.mvn
   "Code related to building up a maven command"
-  (:require-macros [ddev.async :as a])
-  (:require [clojure.string :as s]
+  (:require [ddev.async :as a]
+            [clojure.string :as s]
             [path :as p]
             [fs :as fs]
             [os :as os]
