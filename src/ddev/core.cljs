@@ -82,7 +82,7 @@
 
 (defn prompt-project []
   (a/let [[codice connexta]
-          (js/Promise.all (map github-fetch-repo ["codice" "connexta"]))
+          (a/all (map github-fetch-repo ["codice" "connexta"]))
           repos (sort-by :open_issues > (concat codice connexta))]
     (tui/prompt
      {:type :autocomplete

@@ -2,6 +2,8 @@
   (:refer-clojure :exclude [let promise])
   #?(:cljs (:require-macros ddev.async)))
 
+(defmacro all [& args] `(js/Promise.all ~@args))
+
 (defmacro promise [bindings & body]
   `(js/Promise. (fn ~bindings ~@body)))
 
