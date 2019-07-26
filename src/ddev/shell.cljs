@@ -1,4 +1,5 @@
 (ns ddev.shell
+  (:require-macros [ddev.async :as a])
   (:require [cross-spawn :as spawn]
             [ddev.fs :as fs]))
 
@@ -11,15 +12,15 @@
   ([bin] (sh bin []))
   ([bin args] (sh bin args {}))
   ([bin args opts]
-   (js/Promise.
-    (fn [resolve reject]
-      (let [stdio ["inherit" "inherit" "inherit"]
-            cwd (or (:cwd opts) (fs/cwd))
-            env (merge (-js->clj+ js/process.env) (:env opts))
-            opts (merge opts {:stdio stdio :cwd cwd :env env})
-            ps (spawn (clj->js bin) (clj->js args) (clj->js opts))]
-        (.on ps "error" reject)
-        (.on ps
-             "close"
-             #((if (zero? %) resolve reject))))))))
+   (a/promise
+    [resolve reject]
+    (let [stdio ["inherit" "inherit" "inherit"]
+          cwd (or (:cwd opts) (fs/cwd))
+          env (merge (-js->clj+ js/process.env) (:env opts))
+          opts (merge opts {:stdio stdio :cwd cwd :env env})
+          ps (spawn (clj->js bin) (clj->js args) (clj->js opts))]
+      (.on ps "error" reject)
+      (.on ps
+           "close"
+           #((if (zero? %) resolve reject)))))))
 

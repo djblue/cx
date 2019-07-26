@@ -98,23 +98,21 @@
       :choices (map pull-request->choice prs)})))
 
 (defn start-maven-server []
-  (js/Promise.
-   (fn [resolve]
-     (let [http (js/require "http")
-           srv (http.createServer mvn/local-m2-handler)]
-       (.listen srv 0
-                #(a/let [port (.-port (.address srv))
-                         url (str "http://localhost:" port)
-                         path (p/join (os/homedir) ".m2" "settings.xml")
-                         settings-xml (a/if (fs/file? path)
-                                        (a/let [contents (fs/slurp path)]
-                                          (xml/parse contents))
-                                        {:settings {:mirrors []}})]
-                   (resolve
-                    [(fn [] (.close srv))
-                     (xml/format (mvn/patch-settings-xml settings-xml url))])))))))
-
-
+  (a/promise
+   [resolve]
+   (let [http (js/require "http")
+         srv (http.createServer mvn/local-m2-handler)]
+     (.listen srv 0
+              #(a/let [port (.-port (.address srv))
+                       url (str "http://localhost:" port)
+                       path (p/join (os/homedir) ".m2" "settings.xml")
+                       settings-xml (a/if (fs/file? path)
+                                      (a/let [contents (fs/slurp path)]
+                                        (xml/parse contents))
+                                      {:settings {:mirrors []}})]
+                 (resolve
+                  [(fn [] (.close srv))
+                   (xml/format (mvn/patch-settings-xml settings-xml url))]))))))
 
 (defn run-maven-build
   ([opts] (run-maven-build opts (fs/cwd)))
@@ -143,19 +141,17 @@
   (some #(get-distribution %) (fs/file-seq (str root "/distribution"))))
 
 (defn unzip [src dest]
-  (js/Promise.
-   (fn [resolve reject]
-     (extract
-      src
-      #js {:dir dest
-           :onEntry #(println (p/join dest (.-fileName %)))}
-      (fn [err]
-        (if err (reject err) (resolve)))))))
+  (a/promise
+   [resolve reject]
+   (extract
+    src
+    #js {:dir dest
+         :onEntry #(println (p/join dest (.-fileName %)))}
+    (fn [err]
+      (if err (reject err) (resolve))))))
 
 (defn sleep [time]
-  (js/Promise.
-   (fn [resolve reject]
-     (js/setTimeout resolve time))))
+  (a/promise [resolve] (js/setTimeout resolve time)))
 
 (defn deploy
   ([] (deploy (fs/cwd) (p/join (os/homedir) ".ddev")))

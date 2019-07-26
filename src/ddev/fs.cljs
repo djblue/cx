@@ -32,9 +32,9 @@
    (path->entry root)))
 
 (defn stat [path]
-  (js/Promise.
-   (fn [resolve]
-     (fs/stat path #(resolve %2)))))
+  (a/promise
+   [resolve]
+   (fs/stat path #(resolve %2))))
 
 (defn file? [path]
   (a/let [s (stat path)]
@@ -51,49 +51,49 @@
   (a/let [v (directory? path)] (not v)))
 
 (defn spit [file-name data]
-  (js/Promise.
-    (fn [resolve reject]
-      (fs/writeFile
-        (if (p/isAbsolute file-name)
-          file-name
-          (p/join (cwd) file-name))
-        data
-        "utf8"
-        (fn [err]
-          (if err (reject err) (resolve)))))))
+  (a/promise
+   [resolve reject]
+   (fs/writeFile
+    (if (p/isAbsolute file-name)
+      file-name
+      (p/join (cwd) file-name))
+    data
+    "utf8"
+    (fn [err]
+      (if err (reject err) (resolve))))))
 
 (defn slurp [file-name]
-  (js/Promise.
-   (fn [resolve reject]
-       (fs/readFile
-        (if (p/isAbsolute file-name)
-          file-name
-          (p/join (cwd) file-name))
-        "utf8"
-        (fn [err data]
-          (if err (reject err) (resolve data)))))))
+  (a/promise
+   [resolve reject]
+   (fs/readFile
+    (if (p/isAbsolute file-name)
+      file-name
+      (p/join (cwd) file-name))
+    "utf8"
+    (fn [err data]
+      (if err (reject err) (resolve data))))))
 
 (defn ls [path]
-  (js/Promise.
-    (fn [resolve]
-      (fs/readdir
-        path
-        #js {}
-        (fn [err ls]
-          (if err (resolve []) (resolve (js->clj ls))))))))
+  (a/promise
+   [resolve]
+   (fs/readdir
+    path
+    #js {}
+    (fn [err ls]
+      (if err (resolve []) (resolve (js->clj ls)))))))
 
 (defn mkdir [path]
-  (js/Promise.
-    (fn [resolve reject]
-      (mkdirp
-        path
-        (fn [err]
-          (if err (reject err) (resolve)))))))
+  (a/promise
+   [resolve reject]
+   (mkdirp
+    path
+    (fn [err]
+      (if err (reject err) (resolve))))))
 
 (defn rm [path]
-  (js/Promise.
-    (fn [resolve reject]
-      (rimraf
-        path
-        #(if % (reject %) (resolve))))))
+  (a/promise
+   [resolve reject]
+   (rimraf
+    path
+    #(if % (reject %) (resolve)))))
 

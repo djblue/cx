@@ -1,5 +1,8 @@
 (ns ddev.async
-  (:refer-clojure :exclude [let]))
+  (:refer-clojure :exclude [let promise]))
+
+(defmacro promise [bindings & body]
+  `(js/Promise. (fn ~bindings ~@body)))
 
 (defmacro do [& body]
   (reduce
