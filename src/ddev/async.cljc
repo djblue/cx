@@ -17,8 +17,5 @@
                          (fn [~n] ~body)))
                `(ddev.async/do ~@body))))
 
-(defmacro if
-  [test & body]
-   `(ddev.async/let [result# ~test]
-      (if result# ~@body)))
-
+(defmacro if [test & body]
+  `(ddev.async/let [result# ~test] (if result# ~@body)))
