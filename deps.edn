@@ -8,10 +8,11 @@
   :watch
   {:main-opts ["-m" "ddev.build" "watch"]}
   :nrepl
-  {:main-opts ["-m" "nrepl.cmdline" "--middleware" "[cider.piggieback/wrap-cljs-repl]"]
+  {:main-opts ["-m" "nrepl.cmdline" "--middleware" "[cider.nrepl/cider-middleware,cider.piggieback/wrap-cljs-repl]"]
    :extra-deps
    {nrepl/nrepl {:mvn/version "0.6.0"}
     cider/piggieback {:mvn/version "0.4.1"}
+    cider/cider-nrepl {:mvn/version "0.21.1"}
     node-async {:git/url "https://github.com/djblue/cljs-repl-node-async.git"
                 :sha "5dc0c18f7f8df72ee6c5eadbbcc3bbf695e0691a"}}}}}
 
