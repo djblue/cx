@@ -43,7 +43,7 @@
     :href "https://localhost:8993/admin"}
    {:title "DDF Docs"
     :description "The DDF documentation site"
-    :href "https://localhost:8993/admin/docs/"}])
+    :href "https://localhost:8993/admin/documentation/documentation.html"}])
 
 (defn link->choice [link]
   {:name (str (.padEnd (:title link) 30)
