@@ -4,7 +4,8 @@
             [ddev.mvn :as mvn]
             [ddev.core :as ddev]
             [ddev.api :as api]
-            [ddev.tui :as tui]))
+            [ddev.tui :as tui]
+            open))
 
 (defn redo-last-command
   "Perform the last command with no menu interactions"
@@ -41,6 +42,12 @@
   "Deploy a distribution on your local machine"
   []
   (api/dispatch {:type :deploy}))
+
+(defn open-bookmarks
+  "Open a commonly used link"
+  []
+  (a/let [link (ddev/prompt-link)]
+    (open link)))
 
 (defn clean-workspace
   "Delete items in your workspace directory ($HOME/.ddev)"

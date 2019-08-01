@@ -25,6 +25,7 @@
     "inquirer-autocomplete-prompt": "^1.0.1",
     "mkdirp": "^0.5.1",
     "node-fetch": "^2.3.0",
+    "open": "^6.4.0",
     "rimraf": "^2.6.3",
     "xml2js": "^0.4.19"
   }

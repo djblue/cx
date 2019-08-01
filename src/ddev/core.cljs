@@ -13,6 +13,44 @@
             node-fetch
             [extract-zip :as extract]))
 
+(def links
+  [{:title "DDF Documentation"
+    :description "Documentation for recent DDF releases."
+    :href "http://codice.org/ddf/Documentation-versions.html"}
+   {:title "Codice Foundation"
+    :description "Codice Foundation home page."
+    :href "https://codice.org/index.html"}
+   {:title "Code Reviewer's Cheat Sheet"
+    :description "Helpful tips to apply when doing code reviews."
+    :href "https://codice.atlassian.net/wiki/spaces/DDF/pages/55771138/Reviewer+s+Cheat+Sheet"}
+   {:title "UI Readme"
+    :description "Everything you wanted to know about UI but were too afraid to ask."
+    :href "https://github.com/codice/ddf/blob/master/ui/README.md"}
+   {:title "How to Debug Integration Tests"
+    :description "Tips on debugging itests."
+    :href "https://github.com/codice/ddf/blob/master/distribution/test/itests/README.md"}
+   {:title "Catalog UI Search"
+    :description "The main DDF UI"
+    :href "https://localhost:8993/search/catalog/"}
+   {:title "Admin UI"
+    :description "The DDF Admin UI"
+    :href "https://localhost:8993/admin"}
+   {:title "DDF Docs"
+    :description "The DDF documentation site"
+    :href "https://localhost:8993/admin/docs/"}])
+
+(defn link->choice [link]
+  {:name (str (.padEnd (:title link) 30)
+              (:description repo))
+   :short (:title link)
+   :value (:href link)})
+
+(defn prompt-link []
+  (tui/prompt
+   {:type :autocomplete
+    :message "Select a link"
+    :choices (map link->choice links)}))
+
 (defn fetch
   ([url] (fetch url {}))
   ([url opts]
