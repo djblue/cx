@@ -11,7 +11,13 @@
             [ddev.xml :as xml]
             find-up
             node-fetch
+            node-notifier
             [extract-zip :as extract]))
+
+(defn notify
+  ([message] (notify "cx" message))
+  ([title message]
+   (.notify node-notifier #js {:title title :message message})))
 
 (def links
   [{:title "DDF Documentation"
@@ -167,7 +173,8 @@
          (fs/spit settings-xml settings)
          (sh :mvn options sh-opts)
          (on-close!))
-       (sh :mvn options sh-opts)))))
+       (sh :mvn options sh-opts))
+     (notify "Maven Build Complete"))))
 
 (defn get-distribution [entry]
   (when-let [[_ project version]
