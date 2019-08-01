@@ -1,7 +1,6 @@
 (ns ddev.core
   (:require [ddev.async :as a]
             [clojure.string :as s]
-            [child_process :as cp]
             [path :as p]
             [os :as os]
             [ddev.fs :as fs]
