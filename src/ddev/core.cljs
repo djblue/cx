@@ -153,7 +153,9 @@
   (a/promise [resolve] (js/setTimeout resolve time)))
 
 (defn deploy
-  ([] (deploy (fs/cwd) (p/join (os/homedir) ".ddev")))
+  ([]
+   (a/let [project-root (.then (find-up ".git" #js {:cwd cwd}) p/dirname)]
+     (deploy project-root project-root)))
   ([project-root to]
    (a/let [{:keys [path folder]} (find-distribution project-root)
            bin (p/join to folder "/bin")
