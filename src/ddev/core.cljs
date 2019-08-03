@@ -46,7 +46,7 @@
 
 (defn link->choice [link]
   {:name (str (.padEnd (:title link) 30)
-              (:description repo))
+              (:description link))
    :short (:title link)
    :value (:href link)})
 
@@ -198,7 +198,7 @@
 
 (defn deploy
   ([]
-   (a/let [project-root (.then (find-up ".git" #js {:cwd cwd}) p/dirname)]
+   (a/let [project-root (.then (find-up ".git") p/dirname)]
      (deploy project-root project-root)))
   ([project-root to]
    (a/let [{:keys [path folder]} (find-distribution project-root)
