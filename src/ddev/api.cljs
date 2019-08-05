@@ -22,7 +22,7 @@
         (spit last-action (pr-str action))
         (case type
           :checkout (ddev/checkout opts)
-          :deploy (ddev/deploy)
+          :deploy (ddev/deploy opts)
           :hero-pull-request (ddev/hero-pull-request opts)
           :run-maven-build (ddev/run-maven-build opts)
           :clean-workspace (ddev/clean-workspace opts))))))

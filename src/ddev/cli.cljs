@@ -41,7 +41,8 @@
 (defn deploy-zip-local
   "Deploy a distribution on your local machine"
   []
-  (api/dispatch {:type :deploy}))
+  (a/let [opts (ddev/prompt-dist-options)]
+    (api/dispatch {:type :deploy :opts opts})))
 
 (defn open-bookmarks
   "Open a commonly used link"

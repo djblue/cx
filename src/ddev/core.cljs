@@ -196,19 +196,49 @@
 (defn sleep [time]
   (a/promise [resolve] (js/setTimeout resolve time)))
 
-(defn deploy
-  ([]
-   (a/let [project-root (.then (find-up ".git") p/dirname)]
-     (deploy project-root project-root)))
-  ([project-root to]
-   (a/let [{:keys [path folder]} (find-distribution project-root)
-           bin (p/join to folder "/bin")
-           sh-opts {:cwd bin
-                    :env {:KARAF_DEBUG true
-                          :JAVA_HOME "/usr/lib/jvm/default"}}]
-     (a/if (fs/not-directory? (p/join to folder)) (unzip path to))
-     (when-let [shell js/process.env.SHELL]
-       (sh shell [] sh-opts)))))
+(defn prompt-dist-options []
+  (a/let [dot-git (find-up ".git")
+          project-root (p/dirname dot-git)
+          flags
+          (tui/prompt
+           {:type :checkbox
+            :message "Specify deploy settings"
+            :choices
+            [{:value :disable-security-manager?
+              :name "Disable Security Manager"}]})]
+    {:project-root project-root
+     :flags (->> flags (map keyword) (into #{}))}))
+
+(defn comment-security-properties [contents]
+  (reduce
+   (fn [contents match]
+     (s/replace contents match #(str "# " %)))
+   contents
+   [#"(?m)^policy\.provider=.*$"
+    #"(?m)^java\.security\.manager=.*$"
+    #"(?m)^java\.security\.policy==.*$"
+    #"(?m)^proGrade\.getPermissions\.override=.*$"]))
+
+(defn disable-security-manager [root]
+  (a/let [properties (p/join root "etc/custom.system.properties")
+          contents (fs/slurp properties)
+          new-contents (comment-security-properties contents)]
+    (fs/spit properties new-contents)))
+
+(defn deploy [opts]
+  (a/let [{:keys [project-root flags]} opts
+          {:keys [path folder]} (find-distribution project-root)
+          bin (p/join project-root folder "/bin")
+          sh-opts {:cwd bin
+                   :env {:KARAF_DEBUG true
+                         :JAVA_HOME "/usr/lib/jvm/default"}}]
+    (a/if (fs/not-directory? (p/join project-root folder))
+      (unzip path project-root))
+    (when (flags :disable-security-manager?)
+      (disable-security-manager
+       (p/join project-root folder)))
+    (when-let [shell js/process.env.SHELL]
+      (sh shell [] sh-opts))))
 
 (defn hero-pull-request [opts]
   (let [{:keys [pull-request mvn-options]} opts
@@ -217,8 +247,7 @@
       (checkout pull-request info)
       (if-not (find-distribution (:pull-request-source info))
         (run-maven-build mvn-options (:pull-request-source info)))
-      (deploy (:pull-request-source info)
-              (p/join (:pull-request-root info) "dist")))))
+      (deploy {:project-root (:pull-request-source info)}))))
 
 (defn prompt-clean []
   (a/let [home (p/join (os/homedir) ".ddev")
