@@ -203,6 +203,7 @@
           (tui/prompt
            {:type :checkbox
             :message "Specify deploy settings"
+            :default [:disable-security-manager?]
             :choices
             [{:value :disable-security-manager?
               :name "Disable Security Manager"}]})

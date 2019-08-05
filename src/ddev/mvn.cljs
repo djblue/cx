@@ -122,6 +122,7 @@
 (def prompt-options
   {:type :checkbox
    :message "Specify maven settings"
+   :default [:skip-tests :skip-static :threaded]
    :choices
    [{:value :skip-tests
      :name "Skip Tests"}
