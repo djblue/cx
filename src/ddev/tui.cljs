@@ -15,12 +15,13 @@
 (defn prompt
   ([opts] (prompt opts identity))
   ([opts done]
-   (let [{:keys [type message choices]} opts
+   (let [{:keys [type message choices default]} opts
          p (i/createPromptModule #js {:input js/process.stdin
                                       :output js/process.stderr})]
      (.registerPrompt p "autocomplete" auto)
      (-> {:name "value"
           :type type
+          :default default
           :message message
           :choices choices
           :source #(a/promise

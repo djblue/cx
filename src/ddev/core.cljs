@@ -205,8 +205,14 @@
             :message "Specify deploy settings"
             :choices
             [{:value :disable-security-manager?
-              :name "Disable Security Manager"}]})]
-    {:project-root project-root
+              :name "Disable Security Manager"}]})
+          port
+          (tui/prompt
+           {:type :number
+            :message "Https port"
+            :default 8993})]
+    {:port port
+     :project-root project-root
      :flags (->> flags (map keyword) (into #{}))}))
 
 (defn comment-security-properties [contents]
@@ -225,8 +231,18 @@
           new-contents (comment-security-properties contents)]
     (fs/spit properties new-contents)))
 
+(defn replace-port [root port]
+  (a/let [properties (p/join root "etc/custom.system.properties")
+          contents (fs/slurp properties)
+          new-contents (s/replace
+                        contents
+                        #"(?m)^org\.codice\.ddf\.system\.httpsPort=.*$"
+                        #(str "org.codice.ddf.system.httpsPort=" port))]
+    (fs/spit properties new-contents)))
+
 (defn deploy [opts]
-  (a/let [{:keys [project-root flags]} opts
+  (println opts)
+  (a/let [{:keys [project-root flags port]} opts
           {:keys [path folder]} (find-distribution project-root)
           bin (p/join project-root folder "/bin")
           sh-opts {:cwd bin
@@ -237,6 +253,10 @@
     (when (flags :disable-security-manager?)
       (disable-security-manager
        (p/join project-root folder)))
+    (when-not (= port 8993)
+      (replace-port
+       (p/join project-root folder)
+       port))
     (when-let [shell js/process.env.SHELL]
       (sh shell [] sh-opts))))
 
