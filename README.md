@@ -5,7 +5,7 @@
 A handy little script to help work on [Codice](https://github.com/codice)
 and [Connexta](https://github.com/connexta) projects.
 
-## install
+## Install
 
     npm install -g github:djblue/cx.git#deploy
 
@@ -37,7 +37,7 @@ To build on source changes, do:
 
     clojure -Awatch
 
-## license
+## License
 
 The MIT License (MIT)
 
