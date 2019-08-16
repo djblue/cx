@@ -1,8 +1,20 @@
-dist: xenial
-language: node_js
-node_js:
-  - "10"
-script: npm run build
+sudo: true
+language: java
+jdk:
+  - openjdk8
+cache:
+  directories:
+    - $HOME/.m2
+    - .cpcache
+install:
+  - curl -O https://download.clojure.org/install/linux-install-1.10.1.466.sh
+  - chmod +x linux-install-1.10.1.466.sh
+  - sudo ./linux-install-1.10.1.466.sh
+  - nvm install 10
+before_script:
+  - npm install
+script:
+  - clojure -A:build
 deploy:
   provider: pages
   skip-cleanup: true
