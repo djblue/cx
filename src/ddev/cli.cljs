@@ -28,7 +28,7 @@
     (api/dispatch
       {:type :run-maven-build :opts maven-options})))
 
-(defn hero-pull-request
+(comment (defn hero-pull-request
   "Checkout / build / and run pull request"
   []
   (a/let [project (ddev/prompt-project)
@@ -36,7 +36,7 @@
           mvn-options (mvn/prompt)]
     (api/dispatch
       {:type :hero-pull-request
-       :opts {:pull-request pull-request :mvn-options mvn-options}})))
+       :opts {:pull-request pull-request :mvn-options mvn-options}}))))
 
 (defn deploy-zip-local
   "Deploy a distribution on your local machine"
