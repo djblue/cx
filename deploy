@@ -1,0 +1,27 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+  echo "Please supply branch"
+  exit 1
+fi
+
+git branch -D $1
+
+cp -r target/deploy/ target/git-deploy/
+
+deploy() {
+  git --git-dir=.git --work-tree='./target/git-deploy' "$@" > /dev/null
+}
+
+deploy checkout --orphan $1
+deploy add .
+deploy commit -m 'Temporary deploy branch'
+deploy checkout master -f
+rm -rf ./target/git-deploy
+
+git push origin $1
+
+if [ $? -eq 0 ]; then
+  echo "try: npm install -g github:djblue/cx.git#$1"
+fi
+ 
